@@ -12,15 +12,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
-  final List<FlameGame> _games =  [CameraComponentExample(), BouncingBallExample(), RaycastLightExample()];
-  final List<String> _names =  ["CameraComponentExample", "BouncingBallExample", "RaycastLightExample"];
+  final List<FlameGame> _games = [CameraComponentExample(), BouncingBallExample(), RaycastLightExample()];
+  final List<String> _names = ["CameraComponentExample", "BouncingBallExample", "RaycastLightExample"];
 
   int gameIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text("Flutter Games"),
       ),
@@ -28,7 +27,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.lightBlueAccent,
         child: Column(
           children: [
-             Container(
+            Container(
               color: Colors.purple,
               width: double.infinity,
               child: const Padding(
@@ -40,18 +39,18 @@ class _HomeState extends State<Home> {
               child: ListView(
                 children: List.generate(
                   _names.length,
-                      (index) {
+                  (index) {
                     return ListTile(
                       key: ValueKey(index),
                       leading: const Icon(Icons.home),
-                      title:  Text(_names[index]),
+                      title: Text(_names[index]),
                       onTap: () {
-                        try{
+                        try {
                           print("Index: $index");
                           gameIndex = index;
                           Navigator.pop(context); // Close the drawer
                           setState(() {});
-                        }catch(e){
+                        } catch (e) {
                           print("Error: $e");
                         }
                       },
