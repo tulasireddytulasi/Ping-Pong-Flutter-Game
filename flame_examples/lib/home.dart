@@ -1,6 +1,7 @@
 import 'package:flame/game.dart';
 import 'package:flame_examples/examples/bouncing_ball_example.dart';
 import 'package:flame_examples/examples/camera_component_example.dart';
+import 'package:flame_examples/examples/drag_event_game.dart';
 import 'package:flame_examples/examples/raycast_light_example.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +13,20 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<FlameGame> _games = [CameraComponentExample(), BouncingBallExample(), RaycastLightExample()];
-  final List<String> _names = ["CameraComponentExample", "BouncingBallExample", "RaycastLightExample"];
+  final List<FlameGame> _games = [
+    DragEventsGame(),
+    CameraComponentExample(),
+    BouncingBallExample(),
+    RaycastLightExample(),
+  ];
+
+  final List<String> _names = [
+    "DragEventsGame",
+    "CameraComponentExample",
+    "BouncingBallExample",
+    "RaycastLightExampl"
+        "e",
+  ];
 
   int gameIndex = 0;
 
