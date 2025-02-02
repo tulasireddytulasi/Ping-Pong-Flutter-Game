@@ -24,8 +24,7 @@ class _HomeState extends State<Home> {
     "DragEventsGame",
     "CameraComponentExample",
     "BouncingBallExample",
-    "RaycastLightExampl"
-        "e",
+    "RaycastLightExample",
   ];
 
   int gameIndex = 0;
