@@ -7,7 +7,7 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-class BouncingBallExample extends FlameGame with HasCollisionDetection, PanDetector {
+class BouncingBallExample extends FlameGame with HasCollisionDetection { // PanDetector
   static const description = '''
     This example shows how you can use the Collisions detection api to know when a ball
     collides with the screen boundaries and then update it to bounce off these boundaries.
@@ -29,25 +29,42 @@ class BouncingBallExample extends FlameGame with HasCollisionDetection, PanDetec
     ]);
   }
 
-  @override
-  void onPanUpdate(DragUpdateInfo info) {
-    //super.onPanUpdate(info);
-    final touchX = info.eventPosition.global.x;
-    paddle.position.x = (touchX - paddle.width / 2)
-        .clamp(0, size.x - paddle.width);
-  }
+  // @override
+  // void onPanUpdate(DragUpdateInfo info) {
+  //   //super.onPanUpdate(info);
+  //   final touchX = info.eventPosition.global.x;
+  //   paddle.position.x = (touchX - paddle.width / 2)
+  //       .clamp(0, size.x - paddle.width);
+  // }
 }
 
-class Paddle extends RectangleComponent with CollisionCallbacks {
+class Paddle extends RectangleComponent with CollisionCallbacks, DragCallbacks {
   Paddle({super.position, super.size})
       : super(
-    paint: Paint()..color = const Color(0xFF0099FF),
+    paint: Paint()..color = const Color(0xFFBE2417),
   );
 
   @override
   Future<void> onLoad() async {
     super.onLoad();
     add(RectangleHitbox());
+  }
+
+  @override
+  void onDragStart(DragStartEvent event) {
+    super.onDragStart(event);
+    priority = 10;
+  }
+
+  @override
+  void onDragEnd(DragEndEvent event) {
+    super.onDragEnd(event);
+    priority = 0;
+  }
+
+  @override
+  void onDragUpdate(DragUpdateEvent event) {
+    position += event.localDelta;
   }
 }
 
