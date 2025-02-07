@@ -1,5 +1,5 @@
 import 'package:flame/game.dart';
-import 'package:flame_examples/examples/bouncing_ball_example.dart';
+import 'package:flame_examples/ping_pong_game/bouncing_ball_example.dart';
 import 'package:flame_examples/examples/camera_component_example.dart';
 import 'package:flame_examples/examples/drag_event_game.dart';
 import 'package:flame_examples/examples/raycast_light_example.dart';
