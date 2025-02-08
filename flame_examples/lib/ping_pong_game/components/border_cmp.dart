@@ -3,11 +3,11 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 class BorderWall extends RectangleComponent with CollisionCallbacks {
-  BorderWall({required Vector2 position, required Vector2 gameSize})
+  BorderWall({required Vector2 position, required Vector2 gameSize, Color? color})
       : super(
           position: position,
           size: gameSize,
-          paint: Paint()..color = Colors.green,
+          paint: Paint()..color = color ?? Colors.green,
         );
 
   @override
@@ -22,7 +22,7 @@ class BorderComponent extends RectangleComponent {
       : super(
           size: gameSize,
           paint: Paint()
-            ..color = Colors.white
+            ..color = Colors.blue
             ..style = PaintingStyle.stroke // Only stroke (border)
             ..strokeWidth = 50, // Border width
         );

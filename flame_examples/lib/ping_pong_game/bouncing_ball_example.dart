@@ -3,6 +3,7 @@ import 'package:flame/game.dart';
 import 'package:flame_examples/ping_pong_game/components/ball_cmp.dart';
 import 'package:flame_examples/ping_pong_game/components/border_cmp.dart';
 import 'package:flame_examples/ping_pong_game/components/paddle_cmp.dart';
+import 'package:flutter/material.dart';
 
 class BouncingBallExample extends FlameGame with HasCollisionDetection {
   // PanDetector
@@ -22,10 +23,12 @@ class BouncingBallExample extends FlameGame with HasCollisionDetection {
     addAll([
       paddle,
       ScreenHitbox(),
-      BorderWall(position: Vector2(50, size.y - 50), gameSize: Vector2(size.x - 100, 20)), // Bottom Wall
+      // BorderComponent(size),
+      // Bottom Wall
+      BorderWall(position: Vector2(50, size.y - 50), gameSize: Vector2(size.x - 80, 20), color: Colors.yellow),
       BorderWall(position: Vector2(size.x - 50, 50), gameSize: Vector2(20, size.y - 100)), // Right Wall
-      BorderWall(position: Vector2(50, 50), gameSize: Vector2(size.x - 100, 20)), // Top Wall
-      BorderWall(position: Vector2(50, 50), gameSize: Vector2(20, size.y - 100)),
+      BorderWall(position: Vector2(50, 50), gameSize: Vector2(size.x - 100, 20), color: Colors.purple), // Top Wall
+      BorderWall(position: Vector2(50, 50), gameSize: Vector2(20, size.y - 100), color: Colors.blue), // Left Wall
       Ball(),
     ]);
   }
