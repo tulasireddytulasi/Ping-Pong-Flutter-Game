@@ -14,16 +14,16 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final List<FlameGame> _games = [
+    BouncingBallExample(),
     DragEventsGame(),
     CameraComponentExample(),
-    BouncingBallExample(),
     RaycastLightExample(),
   ];
 
   final List<String> _names = [
+    "BouncingBallExample",
     "DragEventsGame",
     "CameraComponentExample",
-    "BouncingBallExample",
     "RaycastLightExample",
   ];
 

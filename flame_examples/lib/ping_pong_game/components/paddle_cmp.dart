@@ -3,15 +3,13 @@ import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-
 class Paddle extends RectangleComponent with CollisionCallbacks, DragCallbacks {
-  Paddle({super.position, super.size})
+  Paddle({super.position, super.size, Color? paddleColor})
       : super(
-    paint: Paint()..color = const Color(0xFFBE2417),
-  );
+          paint: Paint()..color = paddleColor ?? const Color(0xFFBE2417),
+        );
 
   @override
   Future<void> onLoad() async {
