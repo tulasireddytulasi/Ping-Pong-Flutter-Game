@@ -18,13 +18,17 @@ class BorderWall extends RectangleComponent with CollisionCallbacks {
 }
 
 class BorderComponent extends RectangleComponent {
+  static const double margin = 10;
+  static const double borderWidth = 4;
+
   BorderComponent(Vector2 gameSize)
       : super(
-          size: gameSize,
+          size: gameSize - Vector2.all(2 * margin), // Reduce size by margin
+          position: Vector2.all(margin), // Shift position to apply margin
           paint: Paint()
-            ..color = Colors.blue
-            ..style = PaintingStyle.stroke // Only stroke (border)
-            ..strokeWidth = 50, // Border width
+            ..color = Colors.white
+             ..style = PaintingStyle.stroke // Only stroke (border)
+             ..strokeWidth = borderWidth, // Border width
         );
 
   @override

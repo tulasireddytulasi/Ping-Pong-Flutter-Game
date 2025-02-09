@@ -58,60 +58,71 @@ class Ball extends CircleComponent with HasGameReference<FlameGame>, CollisionCa
 
   @override
   void onCollisionStart(
-    Set<Vector2> intersectionPoints,
-    PositionComponent other,
-  ) {
+      Set<Vector2> intersectionPoints,
+      PositionComponent other,
+      ) {
     super.onCollisionStart(intersectionPoints, other);
-    if (other is ScreenHitbox) {
-      final collisionPoint = intersectionPoints.first;
 
-      // Left Side Collision
-      if (collisionPoint.x == 0) {
-        velocity.x = -velocity.x;
-        velocity.y = velocity.y;
+    const double margin = 10; // Border margin for collision detection
+    const double tolerance = 2.0; // Small margin for error correction (floating-point precision)
+
+    // Get the first point of collision
+    final collisionPoint = intersectionPoints.first;
+
+    // Collision with screen edges
+    if (other is ScreenHitbox) {
+      // Left or Right Edge Collision
+      if ((collisionPoint.x).abs() < tolerance ||
+          (collisionPoint.x - game.size.x).abs() < tolerance) {
+        velocity.x = -velocity.x; // Reverse X-direction
       }
-      // Right Side Collision
-      if (collisionPoint.x == game.size.x) {
-        velocity.x = -velocity.x;
-        velocity.y = velocity.y;
-      }
-      // Top Side Collision
-      if (collisionPoint.y == 0) {
-        velocity.x = velocity.x;
-        velocity.y = -velocity.y;
-      }
-      // Bottom Side Collision
-      if (collisionPoint.y == game.size.y) {
-        velocity.x = velocity.x;
-        velocity.y = -velocity.y;
+
+      // Top or Bottom Edge Collision
+      if ((collisionPoint.y).abs() < tolerance ||
+          (collisionPoint.y - game.size.y).abs() < tolerance) {
+        velocity.y = -velocity.y; // Reverse Y-direction
       }
     }
-    // If the collision is with the border or screen edges, bounce off in opposite direction
+    // Collision with the BorderComponent (with margin considered)
+    else if (other is BorderComponent) {
+      // Left or Right Border Collision
+      if ((collisionPoint.x - margin).abs() < tolerance ||
+          (collisionPoint.x - (game.size.x - margin)).abs() < tolerance) {
+        velocity.x = -velocity.x; // Reverse X-direction
+      }
+
+      // Top or Bottom Border Collision
+      if ((collisionPoint.y - margin).abs() < tolerance ||
+          (collisionPoint.y - (game.size.y - margin)).abs() < tolerance) {
+        velocity.y = -velocity.y; // Reverse Y-direction
+      }
+    }
+    // Collision with the BorderWall (like a paddle)
     else if (other is BorderWall) {
-      final collisionPoint = intersectionPoints.first;
+      // Get BorderWall (Paddle) boundaries
       final paddleLeft = other.position.x;
       final paddleRight = paddleLeft + other.size.x;
       final paddleTop = other.position.y;
       final paddleBottom = paddleTop + other.size.y;
 
-      // Ball's center position
+      // Get Ball's center position
       final ballCenterX = position.x + radius;
       final ballCenterY = position.y + radius;
 
-      // Check if the ball hits the left or right side of the paddle
-      if (ballCenterX > paddleLeft && ballCenterX < paddleRight) {
-        if (collisionPoint.y >= paddleTop && collisionPoint.y <= paddleBottom) {
-          velocity.y = -velocity.y; // Reverse Y-direction when hitting top/bottom of the paddle
-        }
+      // Ball hits the top or bottom of the paddle
+      if (ballCenterX > paddleLeft && ballCenterX < paddleRight &&
+          collisionPoint.y >= paddleTop && collisionPoint.y <= paddleBottom) {
+        velocity.y = -velocity.y; // Reverse Y-direction
       }
 
-      // Check if the ball hits the top or bottom side of the paddle
-      if (ballCenterY > paddleTop && ballCenterY < paddleBottom) {
-        if (collisionPoint.x >= paddleLeft && collisionPoint.x <= paddleRight) {
-          velocity.x = -velocity.x; // Reverse X-direction when hitting left/right of the paddle
-        }
+      // Ball hits the left or right of the paddle
+      if (ballCenterY > paddleTop && ballCenterY < paddleBottom &&
+          collisionPoint.x >= paddleLeft && collisionPoint.x <= paddleRight) {
+        velocity.x = -velocity.x; // Reverse X-direction
       }
-    } else if (other is Paddle) {
+    }
+    // Collision with the Paddle
+    else if (other is Paddle) {
       velocity.y = -velocity.y; // Reverse Y-direction when hitting the paddle
     }
   }
