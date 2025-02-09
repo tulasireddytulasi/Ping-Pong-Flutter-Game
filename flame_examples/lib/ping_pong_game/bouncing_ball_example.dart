@@ -17,7 +17,7 @@ class BouncingBallExample extends FlameGame with HasCollisionDetection { // PanD
     /// Initialize paddle at bottom center
     paddle = Paddle(
       position: Vector2(size.x / 2 - 50, size.y - 50),
-      size: Vector2(100, 20),
+      size: Vector2(200, 20),
     );
     rightPaddle = Paddle(
       position: Vector2(size.x - 50, size.y / 2 - 50),

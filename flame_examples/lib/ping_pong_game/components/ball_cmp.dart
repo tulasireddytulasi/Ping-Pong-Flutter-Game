@@ -18,6 +18,7 @@ class Ball extends CircleComponent with HasGameReference<FlameGame>, CollisionCa
 
   static const double speed = 350;
   static const degree = math.pi / 180;
+  bool isGameOver = false;
 
   @override
   Future<void> onLoad() async {
@@ -35,6 +36,7 @@ class Ball extends CircleComponent with HasGameReference<FlameGame>, CollisionCa
   @override
   void update(double dt) {
     super.update(dt);
+    if (isGameOver) return;
     position += velocity * dt;
   }
 
@@ -58,9 +60,9 @@ class Ball extends CircleComponent with HasGameReference<FlameGame>, CollisionCa
 
   @override
   void onCollisionStart(
-      Set<Vector2> intersectionPoints,
-      PositionComponent other,
-      ) {
+    Set<Vector2> intersectionPoints,
+    PositionComponent other,
+  ) {
     super.onCollisionStart(intersectionPoints, other);
 
     const double margin = 10; // Border margin for collision detection
@@ -72,14 +74,12 @@ class Ball extends CircleComponent with HasGameReference<FlameGame>, CollisionCa
     // Collision with screen edges
     if (other is ScreenHitbox) {
       // Left or Right Edge Collision
-      if ((collisionPoint.x).abs() < tolerance ||
-          (collisionPoint.x - game.size.x).abs() < tolerance) {
+      if ((collisionPoint.x).abs() < tolerance || (collisionPoint.x - game.size.x).abs() < tolerance) {
         velocity.x = -velocity.x; // Reverse X-direction
       }
 
       // Top or Bottom Edge Collision
-      if ((collisionPoint.y).abs() < tolerance ||
-          (collisionPoint.y - game.size.y).abs() < tolerance) {
+      if ((collisionPoint.y).abs() < tolerance || (collisionPoint.y - game.size.y).abs() < tolerance) {
         velocity.y = -velocity.y; // Reverse Y-direction
       }
     }
@@ -94,6 +94,12 @@ class Ball extends CircleComponent with HasGameReference<FlameGame>, CollisionCa
       // Top or Bottom Border Collision
       if ((collisionPoint.y - margin).abs() < tolerance ||
           (collisionPoint.y - (game.size.y - margin)).abs() < tolerance) {
+        if (collisionPoint.y - (game.size.y - margin).abs() == 0) {
+          isGameOver = true;
+          print("Game Over!");
+          return;
+        }
+
         velocity.y = -velocity.y; // Reverse Y-direction
       }
     }
@@ -110,14 +116,18 @@ class Ball extends CircleComponent with HasGameReference<FlameGame>, CollisionCa
       final ballCenterY = position.y + radius;
 
       // Ball hits the top or bottom of the paddle
-      if (ballCenterX > paddleLeft && ballCenterX < paddleRight &&
-          collisionPoint.y >= paddleTop && collisionPoint.y <= paddleBottom) {
+      if (ballCenterX > paddleLeft &&
+          ballCenterX < paddleRight &&
+          collisionPoint.y >= paddleTop &&
+          collisionPoint.y <= paddleBottom) {
         velocity.y = -velocity.y; // Reverse Y-direction
       }
 
       // Ball hits the left or right of the paddle
-      if (ballCenterY > paddleTop && ballCenterY < paddleBottom &&
-          collisionPoint.x >= paddleLeft && collisionPoint.x <= paddleRight) {
+      if (ballCenterY > paddleTop &&
+          ballCenterY < paddleBottom &&
+          collisionPoint.x >= paddleLeft &&
+          collisionPoint.x <= paddleRight) {
         velocity.x = -velocity.x; // Reverse X-direction
       }
     }
