@@ -38,6 +38,9 @@ class Paddle extends RectangleComponent with CollisionCallbacks, DragCallbacks, 
       position.y = (position.y + event.localDelta.y).clamp(0, gameRef.size.y - height);
     } else {
       position.x = (position.x + event.localDelta.x).clamp(0, gameRef.size.x - width);
+      /// Prevent the paddle from moving beyond the screen boundaries
+      const double borderMargin = 10;
+      position.x = position.x.clamp(borderMargin, gameRef.size.x - size.x - borderMargin);
     }
   }
 }
