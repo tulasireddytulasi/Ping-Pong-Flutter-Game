@@ -16,13 +16,33 @@ class PingPongGame extends FlameGame with HasCollisionDetection {
   late Ball ball;
   late CustomButton playButton;
   GameState gameState = GameState.intro;
+  Vector2 paddleSize = Vector2(200, 20);
+  late Vector2 paddlePosition;
+
+  setPaddleSize() {
+    // Set responsive width based on screen size
+    double screenWidth = size.x;
+
+    if (screenWidth < 600) {
+      // Mobile
+      paddleSize = Vector2(screenWidth * 0.3, 20);
+    } else if (screenWidth < 1024) {
+      // Tablet
+      paddleSize = Vector2(screenWidth * 0.25, 20);
+    } else {
+      // Desktop
+      paddleSize = Vector2(screenWidth * 0.1, 20);
+    }
+  }
 
   @override
   void onLoad() {
+    setPaddleSize();
     /// Initialize paddle at bottom center
+    paddlePosition = Vector2((size.x * 0.5) - (paddleSize.x/2), size.y - 50);
     paddle = Paddle(
-      position: Vector2((size.x * 0.5) - 100, size.y - 50),
-      size: Vector2(200, 20),
+      position: paddlePosition,
+      size: paddleSize,
     );
 
     ball = Ball();
