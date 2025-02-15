@@ -102,6 +102,8 @@ class Ball extends CircleComponent with HasGameReference<PingPongGame>, Collisio
     }
     // Collision with the BorderComponent (with margin considered)
     else if (other is BorderComponent) {
+      game.ballSound();
+
       // Left or Right Border Collision
       if ((collisionPoint.x - margin).abs() < tolerance ||
           (collisionPoint.x - (game.size.x - margin)).abs() < tolerance) {
@@ -151,6 +153,7 @@ class Ball extends CircleComponent with HasGameReference<PingPongGame>, Collisio
     }
     // Collision with the Paddle
     else if (other is Paddle) {
+      game.ballSound();
       velocity.y = -velocity.y; // Reverse Y-direction when hitting the paddle
     }
   }

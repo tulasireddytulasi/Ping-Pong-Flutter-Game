@@ -1,5 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flame_examples/core/utils/enums.dart';
 import 'package:flame_examples/ping_pong_game/components/ball_cmp.dart';
 import 'package:flame_examples/ping_pong_game/components/border_cmp.dart';
@@ -18,6 +19,7 @@ class PingPongGame extends FlameGame with HasCollisionDetection {
   GameState gameState = GameState.intro;
   Vector2 paddleSize = Vector2(200, 20);
   late Vector2 paddlePosition;
+  late AudioPool pool;
 
   setPaddleSize() {
     // Set responsive width based on screen size
@@ -35,8 +37,18 @@ class PingPongGame extends FlameGame with HasCollisionDetection {
     }
   }
 
+  void ballSound() {
+    pool.start();
+  }
+
   @override
-  void onLoad() {
+  Future<void> onLoad() async {
+    pool = await FlameAudio.createPool(
+      'sfx/ball_sound.mpeg',
+      minPlayers: 3,
+      maxPlayers: 4,
+    );
+
     setPaddleSize();
     /// Initialize paddle at bottom center
     paddlePosition = Vector2((size.x * 0.5) - (paddleSize.x/2), size.y - 50);
