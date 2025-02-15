@@ -111,7 +111,9 @@ class Ball extends CircleComponent with HasGameReference<PingPongGame>, Collisio
       // Top or Bottom Border Collision
       if ((collisionPoint.y - margin).abs() < tolerance ||
           (collisionPoint.y - (game.size.y - margin)).abs() < tolerance) {
-        if (collisionPoint.y - (game.size.y - margin).abs() == 0) {
+        double diff = (collisionPoint.y - (game.size.y - margin)).abs();
+
+        if (diff < tolerance) { // Use tolerance for floating-point comparison
           gameOver();
           return;
         }
