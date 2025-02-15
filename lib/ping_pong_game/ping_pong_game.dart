@@ -7,7 +7,7 @@ import 'package:flame_examples/ping_pong_game/components/paddle_cmp.dart';
 
 import 'components/button.dart';
 
-class BouncingBallExample extends FlameGame with HasCollisionDetection {
+class PingPongGame extends FlameGame with HasCollisionDetection {
   static const description = '''
     This example shows how you can use the Collisions detection api to know when a ball
     collides with the screen boundaries and then update it to bounce off these boundaries.

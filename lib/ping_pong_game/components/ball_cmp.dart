@@ -4,12 +4,12 @@ import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_examples/core/utils/enums.dart';
-import 'package:flame_examples/ping_pong_game/bouncing_ball_example.dart';
+import 'package:flame_examples/ping_pong_game/ping_pong_game.dart';
 import 'package:flame_examples/ping_pong_game/components/border_cmp.dart';
 import 'package:flame_examples/ping_pong_game/components/paddle_cmp.dart';
 import 'package:flutter/material.dart';
 
-class Ball extends CircleComponent with HasGameReference<BouncingBallExample>, CollisionCallbacks {
+class Ball extends CircleComponent with HasGameReference<PingPongGame>, CollisionCallbacks {
   late Vector2 velocity;
 
   Ball() {
