@@ -3,12 +3,13 @@ import 'dart:ui';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/game.dart';
+import 'package:flame_examples/core/utils/enums.dart';
+import 'package:flame_examples/ping_pong_game/bouncing_ball_example.dart';
 import 'package:flame_examples/ping_pong_game/components/border_cmp.dart';
 import 'package:flame_examples/ping_pong_game/components/paddle_cmp.dart';
 import 'package:flutter/material.dart';
 
-class Ball extends CircleComponent with HasGameReference<FlameGame>, CollisionCallbacks {
+class Ball extends CircleComponent with HasGameReference<BouncingBallExample>, CollisionCallbacks {
   late Vector2 velocity;
 
   Ball() {
@@ -18,12 +19,11 @@ class Ball extends CircleComponent with HasGameReference<FlameGame>, CollisionCa
 
   static const double speed = 350;
   static const degree = math.pi / 180;
-  bool isGameOver = false;
 
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    _resetBall;
+    _init;
     final hitBox = CircleHitbox(
       radius: radius,
     );
@@ -36,14 +36,19 @@ class Ball extends CircleComponent with HasGameReference<FlameGame>, CollisionCa
   @override
   void update(double dt) {
     super.update(dt);
-    if (isGameOver) return;
-    position += velocity * dt;
+    if ((game.gameState == GameState.gameOver) || game.gameState == GameState.paused) return;
+    if (game.gameState == GameState.playing) {
+      position += velocity * dt;
+    }
   }
+
+  void get _init => position = game.size / 2;
+
+  void get _playButtonVisible => game.playButton.isVisible = !game.playButton .isVisible;
 
   void get _resetBall {
     position = game.size / 2;
     final spawnAngle = getSpawnAngle;
-
     final vx = math.cos(spawnAngle * degree) * speed;
     final vy = math.sin(spawnAngle * degree) * speed;
     velocity = Vector2(
@@ -54,8 +59,20 @@ class Ball extends CircleComponent with HasGameReference<FlameGame>, CollisionCa
 
   double get getSpawnAngle {
     final random = math.Random().nextDouble();
-    final spawnAngle = lerpDouble(30, 150, random)!; // Ensures ball moves in an upward direction
+    // [spawnAngle] Ensures ball moves in an upward direction
+    final spawnAngle = lerpDouble(30, 150, random)!;
     return spawnAngle;
+  }
+
+  void gameOver() {
+    game.playButton.updateText("Game Over!");
+    _playButtonVisible;
+    game.gameState = GameState.gameOver;
+  }
+
+  void restartGame() {
+    _playButtonVisible;
+    _resetBall;
   }
 
   @override
@@ -95,8 +112,7 @@ class Ball extends CircleComponent with HasGameReference<FlameGame>, CollisionCa
       if ((collisionPoint.y - margin).abs() < tolerance ||
           (collisionPoint.y - (game.size.y - margin)).abs() < tolerance) {
         if (collisionPoint.y - (game.size.y - margin).abs() == 0) {
-          isGameOver = true;
-          print("Game Over!");
+          gameOver();
           return;
         }
 
