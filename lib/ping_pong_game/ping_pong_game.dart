@@ -6,6 +6,7 @@ import 'package:flame_examples/core/utils/enums.dart';
 import 'package:flame_examples/ping_pong_game/components/ball_cmp.dart';
 import 'package:flame_examples/ping_pong_game/components/border_cmp.dart';
 import 'package:flame_examples/ping_pong_game/components/paddle_cmp.dart';
+import 'package:flutter/material.dart';
 
 import 'components/button.dart';
 
@@ -14,12 +15,12 @@ class PingPongGame extends FlameGame with HasCollisionDetection {
     This example shows how you can use the Collisions detection api to know when a ball
     collides with the screen boundaries and then update it to bounce off these boundaries.
   ''';
-  late final Paddle paddle, rightPaddle;
+  late final Paddle paddle, aiPaddle;
   late Ball ball;
   late CustomButton playButton;
   GameState gameState = GameState.intro;
   Vector2 paddleSize = Vector2(200, 20);
-  late Vector2 paddlePosition;
+  late Vector2 paddlePosition, aiPaddlePosition;
   late AudioPool pool;
 
   setPaddleSize() {
@@ -56,6 +57,14 @@ class PingPongGame extends FlameGame with HasCollisionDetection {
     paddle = Paddle(
       position: paddlePosition,
       size: paddleSize,
+      isPlayer: true,
+    );
+    aiPaddlePosition = Vector2((size.x * 0.5) - (paddleSize.x/2), 30);
+    aiPaddle = Paddle(
+      position: aiPaddlePosition,
+      size: paddleSize,
+      paddleColor: Colors.red,
+      isPlayer: false,
     );
 
     ball = Ball();
@@ -73,6 +82,7 @@ class PingPongGame extends FlameGame with HasCollisionDetection {
 
     addAll([
       playButton,
+      aiPaddle,
       paddle,
       ball,
       ScreenHitbox(),
