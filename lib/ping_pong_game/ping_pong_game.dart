@@ -1,6 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame_audio/flame_audio.dart';
+import 'package:flame_examples/core/utils/app_assets.dart';
 import 'package:flame_examples/core/utils/enums.dart';
 import 'package:flame_examples/ping_pong_game/components/ball_cmp.dart';
 import 'package:flame_examples/ping_pong_game/components/border_cmp.dart';
@@ -44,7 +45,7 @@ class PingPongGame extends FlameGame with HasCollisionDetection {
   @override
   Future<void> onLoad() async {
     pool = await FlameAudio.createPool(
-      'sfx/ball_sound.mpeg',
+      AppAssets.ballSound,
       minPlayers: 3,
       maxPlayers: 4,
     );
